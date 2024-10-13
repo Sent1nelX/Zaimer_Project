@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>Клиенты</h1>
+<form method="get">
+    <input type="text" name="search" placeholder="Поиск клиентов..." value="{{ request.GET.search }}">
+    <button type="submit">Поиск</button>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Имя</th>
+            <th>Фамилия</th>
+            <th>Отчество</th>
+            <th>Телефон</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for client in clients %}
+        <tr>
+            <td>{{ client.client_id }}</td>
+            <td>{{ client.first_name }}</td>
+            <td>{{ client.last_name }}</td>
+            <td>{{ client.middle_name }}</td>
+            <td>{{ client.phone }}</td>
+            <td>{{ client.email }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6">Нет данных для отображения</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Ввод для перехода на конкретную страницу -->
+<form method="get">
+    <label for="pageInput">Перейти на страницу:</label>
+    <input type="number" name="page" id="pageInput" min="1" max="{{ clients.paginator.num_pages }}" value="{{ clients.number }}" style="width: 50px;">
+    <input type="hidden" name="search" value="{{ request.GET.search }}">
+    <button type="submit">Перейти</button>
+</form>
+
+{% endblock %}

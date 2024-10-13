@@ -1,0 +1,123 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <title>Начальная страница</title>
+    <style>
+        /* Стиль для bd-masthead */
+        .bd-masthead {
+            --bd-pink-rgb: 214, 51, 132;
+            padding: 3rem 0;
+            background-image: linear-gradient(180deg, rgba(var(--bs-body-bg-rgb), 0.01), rgba(var(--bs-body-bg-rgb), 1) 85%),
+                              radial-gradient(ellipse at top left, rgba(var(--bs-primary-rgb), 0.5), transparent 50%),
+                              radial-gradient(ellipse at top right, rgba(var(--bd-accent-rgb), 0.5), transparent 50%),
+                              radial-gradient(ellipse at center right, rgba(var(--bd-violet-rgb), 0.5), transparent 50%),
+                              radial-gradient(ellipse at center left, rgba(var(--bd-pink-rgb), 0.5), transparent 50%);
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, rgba(238, 238, 238, 0.9), rgba(255, 255, 255, 0.9));
+            line-height: 1.5;
+            color: #333;
+        }
+
+        h1 {
+            color: #4CAF50;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        nav {
+            background: linear-gradient(90deg, #4CAF50, #81C784); /* Градиент для меню */
+            padding: 10px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        nav a {
+            margin: 0 15px;
+            padding: 8px 15px;
+            text-decoration: none;
+            color: white;
+            border-radius: 20px;
+            background: linear-gradient(90deg, #66bb6a, #43a047);
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        nav a:hover {
+            background: linear-gradient(90deg, #43a047, #66bb6a);
+            transform: scale(1.1);
+        }
+
+        .content {
+            padding: 20px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            margin: 0 auto;
+            width: 80%;
+        }
+
+        .content h2 {
+            color: #43a047;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .content p {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            line-height: 1.7;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+            background: #4CAF50;
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-links">
+            <a href="{% url 'client_list' %}">Клиенты</a>
+            <a href="{% url 'passport_list' %}">Паспорта</a>
+            <a href="{% url 'client_passport_list' %}">Клиенты и Паспорта</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}">Выйти</a>
+            {% else %}
+                <a href="{% url 'login' %}">Вход</a>
+            {% endif %}
+        </div>
+    </nav>
+    
+
+
+    <div>
+        <tbody>
+            {% block content %}{% endblock %}
+        </tbody>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        © 2024 Все права защищены. Наша компания.
+    </footer>
+
+</body>
+</html>

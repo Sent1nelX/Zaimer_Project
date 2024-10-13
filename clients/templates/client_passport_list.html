@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h1>Клиенты и Паспорта</h1>
+    <form method="get">
+        <select name="filter">
+            <option value="all" {% if request.GET.filter == "all" %}selected{% endif %}>Все</option>
+            <option value="linked" {% if request.GET.filter == "linked" %}selected{% endif %}>Только связанные</option>
+        </select>
+        <button type="submit">Применить фильтр</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Клиент</th>
+                <th>День рождение</th>
+                <th>ИИН</th>
+                <th>Дата выдачи</th>
+                <th>Дата окончания</th>
+                <th>Кем выдан</th>
+                <th>Клиент ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for passport in client_passports %}
+            <tr>
+                <td>{{ passport.client }}</td>
+                <td>{{ passport.birth_date }}</td>
+                <td>{{ passport.passport_number }}</td>
+                <td>{{ passport.issue_date }}</td>
+                <td>{{ passport.expiry_date }}</td>
+                <td>{{ passport.issuing_authority }}</td>
+                <td>{{ passport.client_id }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" style="text-align: center;">Нет данных для отображения</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Пагинация -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if client_passports.has_previous %}
+                <a href="?page=1&filter={{ request.GET.filter }}">Первая</a>
+                <a href="?page={{ client_passports.previous_page_number }}&filter={{ request.GET.filter }}">Предыдущая</a>
+            {% endif %}
+
+            {% for num in client_passports.paginator.page_range %}
+                {% if client_passports.number == num %}
+                    <span>{{ num }}</span> <!-- Текущая страница -->
+                {% else %}
+                    <a href="?page={{ num }}&filter={{ request.GET.filter }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if client_passports.has_next %}
+                <a href="?page={{ client_passports.next_page_number }}&filter={{ request.GET.filter }}">Следующая</a>
+                <a href="?page={{ client_passports.paginator.num_pages }}&filter={{ request.GET.filter }}">Последняя</a>
+            {% endif %}
+        </span>
+    </div>
+
+    <!-- Ввод для перехода на конкретную страницу -->
+    <div class="page-input">
+        <form method="get" style="text-align: center;"> <!-- Центрирование формы -->
+            <label for="pageInput">Перейти на страницу:</label>
+            <input type="number" name="page" id="pageInput" min="1" max="{{ passports.paginator.num_pages }}" value="{{ passports.number }}" style="width: 50px;">
+            <input type="hidden" name="search" value="{{ request.GET.search }}">
+            <button type="submit">Перейти</button>
+        </form>
+    </div>
+</body>
+</html>
+{% endblock %}

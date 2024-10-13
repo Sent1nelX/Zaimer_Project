@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <h1>Паспорта</h1>
+    <form method="get">
+        <input type="text" name="search" placeholder="Поиск паспортов..." value="{{ request.GET.search }}">
+        <button type="submit">Поиск</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Клиент</th>
+                <th>Номер паспорта</th>
+                <th>Дата выдачи</th>
+                <th>Дата окончания</th>
+                <th>Кем выдан</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for passport in passports %}
+            <tr>
+                <td>{{ passport.client }}</td>
+                <td>{{ passport.passport_number }}</td>
+                <td>{{ passport.issue_date }}</td>
+                <td>{{ passport.expiry_date }}</td>
+                <td>{{ passport.issuing_authority }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" style="text-align: center;">Нет данных для отображения</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Пагинация -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if passports.has_previous %}
+                <a href="?page=1&search={{ request.GET.search }}">Первая</a>
+                <a href="?page={{ passports.previous_page_number }}&search={{ request.GET.search }}">Предыдущая</a>
+            {% endif %}
+
+            <span class="current">
+                Страница {{ passports.number }} из {{ passports.paginator.num_pages }}.
+            </span>
+
+            {% if passports.has_next %}
+                <a href="?page={{ passports.next_page_number }}&search={{ request.GET.search }}">Следующая</a>
+                <a href="?page={{ passports.paginator.num_pages }}&search={{ request.GET.search }}">Последняя</a>
+            {% endif %}
+        </span>
+    </div>
+
+    <!-- Ввод для перехода на конкретную страницу -->
+    <form method="get" style="text-align: center;"> <!-- Центрирование формы -->
+        <label for="pageInput">Перейти на страницу:</label>
+        <input type="number" name="page" id="pageInput" min="1" max="{{ passports.paginator.num_pages }}" value="{{ passports.number }}" style="width: 50px;">
+        <input type="hidden" name="search" value="{{ request.GET.search }}">
+        <button type="submit">Перейти</button>
+    </form>
+</body>
+</html>
+{% endblock %}
