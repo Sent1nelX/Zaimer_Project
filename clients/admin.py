@@ -45,10 +45,40 @@ from .models import Client, Passport, PotentialClient, TelegramUser, TelegramUse
 #     list_filter = ('timestamp',)
 
 
+# @admin.register(Client)
+# @admin.register(Passport)
+# @admin.register(PotentialClient)
+# @admin.register(TelegramUser)
+# @admin.register(TelegramUserLog)
+# class ClientAdmin(admin.ModelAdmin):
+#     pass
+
+from django.contrib import admin
+from .models import Client, Passport, PotentialClient, TelegramUser, TelegramUserLog
+
+# Регистрация моделей
 @admin.register(Client)
-@admin.register(Passport)
-@admin.register(PotentialClient)
-@admin.register(TelegramUser)
-@admin.register(TelegramUserLog)
 class ClientAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['client_id', 'first_name', 'last_name', 'phone', 'email', 'status']
+    search_fields = ['client_id', 'first_name', 'last_name', 'phone', 'email']
+
+@admin.register(Passport)
+class PassportAdmin(admin.ModelAdmin):
+    list_display = ['client', 'passport_number', 'issue_date', 'expiry_date']
+    search_fields = ['passport_number', 'client__first_name', 'client__last_name']
+
+@admin.register(PotentialClient)
+class PotentialClientAdmin(admin.ModelAdmin):
+    list_display = ['client_id', 'phone', 'contract_id']
+    search_fields = ['client_id', 'phone', 'contract_id']
+
+@admin.register(TelegramUser)
+class TelegramUserAdmin(admin.ModelAdmin):
+    list_display = ['telegram_id', 'first_name', 'last_name', 'phone_number', 'username', 'approved']
+    search_fields = ['telegram_id', 'first_name', 'last_name', 'phone_number', 'username']
+
+@admin.register(TelegramUserLog)
+class TelegramUserLogAdmin(admin.ModelAdmin):
+    list_display = ['user', 'action', 'timestamp']
+    search_fields = ['user__telegram_id', 'action']
+

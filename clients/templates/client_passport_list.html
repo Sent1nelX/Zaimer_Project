@@ -49,28 +49,6 @@
         </tbody>
     </table>
 
-    <!-- Пагинация -->
-    <div class="pagination">
-        <span class="step-links">
-            {% if client_passports.has_previous %}
-                <a href="?page=1&filter={{ request.GET.filter }}">Первая</a>
-                <a href="?page={{ client_passports.previous_page_number }}&filter={{ request.GET.filter }}">Предыдущая</a>
-            {% endif %}
-
-            {% for num in client_passports.paginator.page_range %}
-                {% if client_passports.number == num %}
-                    <span>{{ num }}</span> <!-- Текущая страница -->
-                {% else %}
-                    <a href="?page={{ num }}&filter={{ request.GET.filter }}">{{ num }}</a>
-                {% endif %}
-            {% endfor %}
-
-            {% if client_passports.has_next %}
-                <a href="?page={{ client_passports.next_page_number }}&filter={{ request.GET.filter }}">Следующая</a>
-                <a href="?page={{ client_passports.paginator.num_pages }}&filter={{ request.GET.filter }}">Последняя</a>
-            {% endif %}
-        </span>
-    </div>
 
     <!-- Ввод для перехода на конкретную страницу -->
     <div class="page-input">

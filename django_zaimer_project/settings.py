@@ -7,7 +7,7 @@ SECRET_KEY = "django-insecure-juee%zktn2@y46rn*^_#ria=qwetlnvuy@8yt02vcewx%f8k8m
 
 DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["127.0.0.1", "higbig-data.onrender.com"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -72,7 +72,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = "RU-ru"
+LANGUAGE_CODE = "ru"
 
 TIME_ZONE = "Asia/Almaty"
 
@@ -82,11 +82,9 @@ USE_TZ = True
 
 # Настройки статических файлов
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / "static",  # Убедитесь, что эта строка существует
-]
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # Измените на 'staticfiles' для совместимости с Render
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
+MEDIA_URL = 'media/'
+MEDIA_ROOT = [BASE_DIR / 'media/']
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
